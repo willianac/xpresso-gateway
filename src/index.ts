@@ -1,8 +1,11 @@
 import fs from "node:fs";
+import { parseOrderFields } from "./utils/fieldsParser";
 
 teste();
 
 function teste() {
-	const t = fs.readFileSync("./order.TXT");
-	console.log(t.toString("utf-8").split("|"));
+	const content = fs.readFileSync("./order.TXT");
+	const result = parseOrderFields(content.toString(), "|");
+
+	console.log(result);
 }
