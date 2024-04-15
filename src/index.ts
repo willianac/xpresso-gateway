@@ -23,9 +23,9 @@ async function writeAllRates() {
 
 	try {
 		await client.access({
-			host: "xpressoadm.moneytransmittersystem.com",
-			user: "xpsgw1",
-			password: "rw66wimp",
+			host: process.env.FTP_HOST,
+			user: process.env.FTP_USER,
+			password: process.env.FTP_PASS,
 			secure: false
 		});
 
