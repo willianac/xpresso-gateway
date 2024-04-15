@@ -16,7 +16,7 @@ export async function getRate(
 	targetCurrency: string, 
 	accessToken: string
 ): Promise<GetRateResponse> {
-	const res = await fetch(process.env.ALMOND_SANDBOX_URL as string + `/v1/rates?sourceCurrency=${sourceCurrency}&targetCurrency=${targetCurrency}`, {
+	const res = await fetch(process.env.ALMOND_SANDBOX_URL as string + `/v1/rates?sourceCurrency=${sourceCurrency}&targetCurrency=${targetCurrency}&live=y`, {
 		method: "GET",
 		headers: {
 			"Authorization": "Bearer " + accessToken
