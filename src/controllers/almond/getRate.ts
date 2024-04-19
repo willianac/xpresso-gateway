@@ -1,4 +1,5 @@
 /* eslint-disable quotes */
+import fetch from "node-fetch";
 
 type GetRateResponse = {
 	rateId: string
