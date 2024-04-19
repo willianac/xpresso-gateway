@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 type GetAccessTokenResponse = {
 	access_token: string
 	scope: string

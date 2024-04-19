@@ -1,4 +1,5 @@
 import "dotenv/config";
+import fetch from "node-fetch";
 import { Client } from "basic-ftp";
 import { getAcessToken } from "./controllers/almond/getAccessToken.js";
 import { getRate } from "./controllers/almond/getRate.js";
@@ -37,3 +38,11 @@ async function writeAllRates() {
 	}
 	client.close();
 }
+
+async function test() {
+	const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+	const data = await res.json();
+	console.log(data);
+}
+
+test();

@@ -29,6 +29,7 @@
     "dotenv": "^16.4.5",
     "fastify": "^4.26.2",
     "fastify-xml-body-parser": "^2.2.0",
+    "node-fetch": "^3.3.2",
     "xml-js": "^1.6.11"
   }
 }
