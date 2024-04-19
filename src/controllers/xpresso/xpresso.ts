@@ -7,10 +7,9 @@ const routes = async (server: FastifyInstance) => {
 	});
 	
 	server.post("/xpresso", async function(req, rep) {
-		const json = req.body as object;
-		const xmlData = xmljs.js2xml(json, {compact: true});
-		rep.type("text/xml");
-		rep.send(xmlData);
+		const obj = req.body;
+		console.log(obj);
+		rep.send(obj);
 	});
 };
 
