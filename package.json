@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src",
-    "build": "tsup src",
+    "build": "tsup src --format esm",
     "lint": "eslint '**/*.ts'"
   },
   "keywords": [],
