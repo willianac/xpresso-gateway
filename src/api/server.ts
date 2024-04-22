@@ -2,7 +2,7 @@ import "dotenv/config";
 import Fastify from "fastify";
 import xmlParser from "fastify-xml-body-parser";
 import formParser from "@fastify/formbody";
-import routes from "./controllers/xpresso/xpresso.js";
+import routes from "../controllers/xpresso/xpresso.js";
 
 const fastify = Fastify({
 	logger: false,
