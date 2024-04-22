@@ -1,5 +1,4 @@
 import { FastifyInstance } from "fastify";
-import xmljs from "xml-js";
 
 const routes = async (server: FastifyInstance) => {
 	server.get("/", async function(req, rep) {

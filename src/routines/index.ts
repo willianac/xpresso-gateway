@@ -1,8 +1,8 @@
 import "dotenv/config";
 import { Client } from "basic-ftp";
-import { getAcessToken } from "./controllers/almond/getAccessToken.js";
-import { getRate } from "./controllers/almond/getRate.js";
-import { generateRateFile } from "./utils/generateRateFile.js";
+import { getAcessToken } from "../controllers/almond/getAccessToken.js";
+import { getRate } from "../controllers/almond/getRate.js";
+import { generateRateFile } from "../utils/generateRateFile.js";
 
 async function writeAllRates() {
 	const token = (await getAcessToken()).access_token;
