@@ -1,10 +1,10 @@
 import "dotenv/config";
 import { Client } from "basic-ftp";
-import { getAcessToken } from "../controllers/almond/getAccessToken.js";
-import { getRate } from "../controllers/almond/getRate.js";
+import { getAcessToken } from "../api/controllers/almond/getAccessToken.js";
+import { getRate } from "../api/controllers/almond/getRate.js";
 import { generateRateFile } from "../utils/generateRateFile.js";
 
-async function writeAllRates() {
+async function writeRatesToFTP() {
 	const token = (await getAcessToken()).access_token;
 	const sourceCurrency = "USD";
 	const targetCurrencies = ["PHP", "MXN", "BRL", "IDR"];
@@ -37,3 +37,8 @@ async function writeAllRates() {
 	}
 	client.close();
 }
+
+writeRatesToFTP();
+setInterval(() => {
+	writeRatesToFTP();
+}, 900000);
