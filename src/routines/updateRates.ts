@@ -37,3 +37,8 @@ async function writeRatesToFTP() {
 	}
 	client.close();
 }
+
+writeRatesToFTP();
+setInterval(() => {
+	writeRatesToFTP();
+}, 900000);
