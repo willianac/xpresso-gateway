@@ -2,10 +2,10 @@
   "name": "xpresso-gateway",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.ts",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src",
+    "dev": "node --watch --loader=tsx src/api/server.ts",
     "build": "tsup src --format esm",
     "lint": "eslint '**/*.ts'"
   },
