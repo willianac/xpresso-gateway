@@ -25,7 +25,13 @@ async function updateBankList() {
 	for(const country of countries) {
 		const response = await getFiList(token, country);
 
-		for(const fi of response.fis) {
+		//mudar 'Y' e 'N' por '1' e '0' respectivamente
+		const updatedList = response.fis.map(fi => {
+			const active = fi.active === "Y" ? "1" : "0";
+			return {...fi, active};
+		});
+
+		for(const fi of updatedList) {
 			fis.push([fi.fiName, fi.fiId, fi.active]);
 		}
 
