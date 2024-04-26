@@ -6,7 +6,7 @@ const routes = async (server: FastifyInstance) => {
 		rep.send("received");
 	});
 	
-	server.post("/xpresso/xps/9714", async function(req, rep) {
+	server.post("/xpresso/xp/9714", async function(req, rep) {
 		const body = req.body as object;
 		const jsObject = {...body};
 		const xmlData = js2xml(jsObject, {compact: true});
