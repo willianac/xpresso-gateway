@@ -1,6 +1,8 @@
 import fs from "node:fs";
 
-export function generateCSVFile(name: string, useTimeStamp: boolean, ...args: string[][]) {
+type FileExtension = "csv" | "txt"
+
+export function generateFTPFile(name: string, fileExtension: FileExtension, useTimeStamp: boolean, ...args: string[][]) {
 	const csvData = args.map(row => row.join("|")).join("\n");
 	const date = new Date();
 	let timeStamp = "";
@@ -15,7 +17,7 @@ export function generateCSVFile(name: string, useTimeStamp: boolean, ...args: st
 	}
 	const fileName = name + timeStamp; 
 
-	fs.writeFile(`${fileName}.csv`, csvData, (err) => {
+	fs.writeFile(`${fileName}.${fileExtension}`, csvData, (err) => {
 		if(err) {
 			console.error(err);
 		}

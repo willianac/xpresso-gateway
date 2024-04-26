@@ -2,7 +2,7 @@ import "dotenv/config";
 import { Client } from "basic-ftp";
 import { getAcessToken } from "../api/controllers/almond/getAccessToken.js";
 import { getFiList } from "../api/controllers/almond/getFiList.js";
-import { generateCSVFile } from "../utils/generateCSVFile.js";
+import { generateFTPFile } from "../utils/generateFTPFile.js";
 
 type Countries = "PH" | "ID"
 
@@ -25,18 +25,13 @@ async function updateBankList() {
 	for(const country of countries) {
 		const response = await getFiList(token, country);
 
-		//mudar 'Y' e 'N' por '1' e '0' respectivamente
-		const updatedList = response.fis.map(fi => {
-			const active = fi.active === "Y" ? "1" : "0";
-			return {...fi, active};
-		});
-
-		for(const fi of updatedList) {
+		for(const fi of response.fis) {
 			fis.push([fi.fiName, fi.fiId, fi.active]);
 		}
 
-		const file = generateCSVFile(`${country}XPSFIS`, true, ...fis);
-		await client.uploadFrom(file + ".csv", file + ".csv");
+		let file = generateFTPFile(`${country}XPSFIS`, "txt", true, ...fis);
+		await client.uploadFrom(file + ".txt", file + ".txt");
+		file = "";
 		fis = [];
 	}
 	client.close();

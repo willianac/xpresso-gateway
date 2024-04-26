@@ -2,7 +2,7 @@ import "dotenv/config";
 import { Client } from "basic-ftp";
 import { getAcessToken } from "../api/controllers/almond/getAccessToken.js";
 import { getRate } from "../api/controllers/almond/getRate.js";
-import { generateCSVFile } from "../utils/generateCSVFile.js";
+import { generateFTPFile } from "../utils/generateFTPFile.js";
 
 async function writeRatesToFTP() {
 	const token = (await getAcessToken()).access_token;
@@ -16,7 +16,7 @@ async function writeRatesToFTP() {
 		rateList.push([sourceCurrency, currency, rate.exchangeRate.toString()]);
 	}
 
-	const fileName = generateCSVFile("XPSPFX", true, ...rateList);
+	const fileName = generateFTPFile("XPSPFX", "csv", true, ...rateList);
 
 	const client = new Client();
 	client.ftp.verbose = true;
