@@ -11,7 +11,7 @@ export async function getAcessToken(): Promise<GetAccessTokenResponse> {
 	const token = btoa(`${process.env.ALMOND_CLIENT_ID}:${process.env.ALMOND_CLIENT_SECRET}`);
 	const almondParams = new URLSearchParams();
 	almondParams.append("grant_type", "client_credentials"),
-	almondParams.append("scope", "fi");
+	almondParams.append("scope", "fi transactions");
 
 	const res = await fetch(process.env.ALMOND_SANDBOX_URL as string + "/oauth2/token", {
 		method: "POST",

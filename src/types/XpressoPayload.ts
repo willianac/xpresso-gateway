@@ -20,5 +20,6 @@ export type XpressoPayload = {
 	receiveAmtCcy: string
 	purpose: string
 	relationship: string
-	sourceOfFunds: string
+	sourceFiTransactionId: string
+	Ordem_sequence: string
 }
