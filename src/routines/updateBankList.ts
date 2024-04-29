@@ -37,8 +37,25 @@ async function updateBankList() {
 	client.close();
 }
 
-updateBankList();
-//mude o primeiro item para definir de quantas em quantas HORAS a função irá rodar.
-setInterval(() => {
-	updateBankList();
-}, 24 * 60 * 60 * 1000);
+function schedule() {
+	//vai rodar todo dia as 00:01
+	const tenOClock = new Date().setHours(0, 1, 0, 0);
+
+	let timeUntilTenPM = tenOClock - Date.now();
+	
+	if (timeUntilTenPM < 0) {
+		timeUntilTenPM += 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+	}
+
+	setTimeout(async () => {
+		updateBankList();
+		schedule();
+	}, timeUntilTenPM);
+}
+
+schedule();
+// updateBankList();
+// //mude o primeiro item para definir de quantas em quantas HORAS a função irá rodar.
+// setInterval(() => {
+// 	updateBankList();
+// }, 24 * 60 * 60 * 1000);
