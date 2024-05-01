@@ -2,12 +2,10 @@ export function parseOrderFields(str: string, delimiter: string): Record<string,
 	const splittedFields = str.split(delimiter);
 
 	const fields = [
-		"orderSequence", "orderNumber", "transactionDate", "senderName", "senderLastName",
-		"senderCity", "senderID", "senderDOB", "receiverName", "receiverLastName", "receiverCity",
-		"receiverID", "receiverPhone1", "receiverPhone2", "receiverAddress1", "receiverAddress2",
-		"receiverState", "receiverZip", "receiverCountry", "bankCode", "bankName", "bankBranch",
-		"bankAcct", "bankAcctType", "baseCurrency", "dueToPayer", "payerRate", "landedCurrency",
-		"localAmount", "remarks", "serialNo"
+		"sourceFiTransactionId", "senderName", "senderLastName", "senderDOB", "senderCountryOfBirth", "senderId",
+		"senderDocType", "senderNationality", "senderOccupation", "senderFiId", "senderCountryCode", "disableScreening",
+		"receiverName", "receiverLastName", "receiverAcctNumber", "receiverBankCode", "receiverCountry", "receiveAmount",
+		"targetCurrency", "purpose", "relationship", "orderSequence", "gatewayConnectionStatusCode"
 	];
 
 	const order: Record<string, string> = {};
