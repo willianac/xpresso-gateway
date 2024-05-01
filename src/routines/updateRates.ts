@@ -30,7 +30,7 @@ async function writeRatesToFTP() {
 		});
 
 		await client.cd("./Rates");
-		await client.uploadFrom(fileName + ".csv", fileName + ".csv");
+		await client.uploadFrom(fileName + ".txt", fileName + ".txt");
 		client.close();
 	} catch (error) {
 		console.error(error);
