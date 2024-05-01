@@ -6,16 +6,12 @@ type ProcessTransactionResponse = {
 }
 
 export async function processTransaction(id: string, accessToken: string) {
-	try {
-		const res = await fetch(process.env.ALMOND_SANDBOX_URL + `/v1/transactions/${id}/process`, {
-			method: "POST",
-			headers: {
-				"Authorization": "Bearer " + accessToken
-			}
-		});
-		const data = await res.json() as ProcessTransactionResponse;
-		return data;
-	} catch (error) {
-		console.log(error);
-	}
+	const res = await fetch(process.env.ALMOND_SANDBOX_URL + `/v1/transactions/${id}/process`, {
+		method: "POST",
+		headers: {
+			"Authorization": "Bearer " + accessToken
+		}
+	});
+	const data = await res.json() as ProcessTransactionResponse;
+	return data;
 }
