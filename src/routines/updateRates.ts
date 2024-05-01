@@ -16,7 +16,7 @@ async function writeRatesToFTP() {
 		rateList.push([sourceCurrency, currency, rate.exchangeRate.toString()]);
 	}
 
-	const fileName = generateFTPFile("XPSPFX", "csv", true, ...rateList);
+	const fileName = generateFTPFile("XPSPFX", "txt", true, ...rateList);
 
 	const client = new Client();
 	client.ftp.verbose = true;
