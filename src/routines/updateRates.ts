@@ -13,7 +13,7 @@ async function writeRatesToFTP() {
 
 	for(const currency of targetCurrencies) {
 		//use a flag da almond 'live=y' se o pais for BRL, para evitar erros
-		const live = currency === "BRL" ? true : false;
+		const live = currency === "PHP" ? false : true;
 		const rate = await getRate(sourceCurrency, currency, token, live);
 		rateList.push([sourceCurrency, currency, rate.exchangeRate.toString()]);
 	}
