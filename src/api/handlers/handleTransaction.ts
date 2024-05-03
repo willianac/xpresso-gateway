@@ -1,19 +1,26 @@
 import { getAcessToken } from "../controllers/almond/getAccessToken.js";
-import { getRate } from "../controllers/almond/getRate.js";
 
 import { XpressoPayload } from "../../types/XpressoPayload.js";
 import { initiateTransaction } from "../controllers/almond/initiateTransaction.js";
-
+import { processTransaction } from "../controllers/almond/processTransaction.js";
+import { checkTransactionStatus } from "../controllers/almond/checkTransactionStatus.js";
+import { getRate } from "../controllers/almond/getRate.js";
+import { AlmondResponseError } from "../../types/AlmondResponseError.js";
 
 export async function handleTransaction(payload: XpressoPayload) {
-	const token = (await getAcessToken()).access_token;
+	try {
+		const token = (await getAcessToken()).access_token;
+		const rate = await getRate("USD", "PHP", token);
+		console.log(rate);
 
-	const SOURCE_CURRENCY = "USD";
-	const rate = await getRate(SOURCE_CURRENCY, payload.receiveAmtCcy, token);
-	//const transaction = await initiateTransaction(payload, token, rate.rateId);
-	return {
-		transactionStatus: "PNDG",
-		rate: rate.exchangeRate.toFixed(4),
-		dueToPayer: (Number(payload.receiveAmt) / rate.exchangeRate).toFixed(2)
-	};
+		console.log("<<TRANSACTION>>");
+		const transaction = await initiateTransaction(payload, token, rate.rateId);
+		console.log(transaction);
+
+		const processedTransaction = await processTransaction(transaction.transactionId, token);
+		const res = await checkTransactionStatus(transaction.transactionId, token);
+	} catch (error) { 
+		console.log("ERRO AQUI");
+		const erro = error as AlmondResponseError;
+	}
 }
