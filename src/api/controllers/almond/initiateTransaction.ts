@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { XpressoPayload } from "../../../types/XpressoPayload.js";
+import { AlmondResponseError } from "../../../types/AlmondResponseError.js";
 
 type InitiateTransactionResponse = {
 	transactionId: string
@@ -58,10 +59,10 @@ export async function initiateTransaction(payload: XpressoPayload, accessToken: 
 	});
 
 	if(!res.ok) {
-		console.log(res);
+		const error = await res.json() as AlmondResponseError;
+		throw error;
 	}
 	
 	const data = await res.json() as InitiateTransactionResponse;
-	console.log(data);
 	return data;
 }
