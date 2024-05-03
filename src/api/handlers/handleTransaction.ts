@@ -10,7 +10,7 @@ import { AlmondResponseError } from "../../types/AlmondResponseError.js";
 export async function handleTransaction(payload: XpressoPayload) {
 	try {
 		const token = (await getAcessToken()).access_token;
-		const rate = await getRate("USD", "PHP", token);
+		const rate = await getRate("USD", "PHP", token, false);
 		console.log(rate);
 
 		console.log("<<TRANSACTION>>");
