@@ -7,7 +7,7 @@ type InitiateTransactionResponse = {
 	transactionStatus: string
 	recipientName: string
 	sendAmt: {
-		value: string
+		value: number
 		ccy: string
 	}
 	receiveAmt: {
@@ -47,8 +47,6 @@ export async function initiateTransaction(payload: XpressoPayload, accessToken: 
 		sendAmtCcy: "USD",
 		sourceFiTransactionId: payload.sourceFiTransactionId,
 	};
-	console.log(requestBody);
-
 	const res = await fetch(process.env.ALMOND_SANDBOX_URL + "/v1/transactions", {
 		method: "POST",
 		headers: {

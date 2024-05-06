@@ -1,4 +1,6 @@
-export function parseOrderFields(str: string, delimiter: string): Record<string, string> {
+import { XpressoPayload } from "../types/XpressoPayload.js";
+
+export function parseOrderFields(str: string, delimiter: string): XpressoPayload {
 	const splittedFields = str.split(delimiter);
 
 	const fields = [
@@ -16,5 +18,5 @@ export function parseOrderFields(str: string, delimiter: string): Record<string,
 		order[field] = splittedFields[i];
 	}
 
-	return order;
+	return order as XpressoPayload;
 }
