@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import { AlmondResponseError } from "../../../types/AlmondResponseError.js";
 
 type ProcessTransactionResponse = {
 	transactionStatus: string,
@@ -12,6 +13,12 @@ export async function processTransaction(id: string, accessToken: string) {
 			"Authorization": "Bearer " + accessToken
 		}
 	});
+
+	if(!res.ok) {
+		const error = await res.json() as AlmondResponseError;
+		throw error;
+	}
+
 	const data = await res.json() as ProcessTransactionResponse;
 	return data;
 }
