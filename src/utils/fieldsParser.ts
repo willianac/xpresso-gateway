@@ -1,11 +1,14 @@
-export function parseOrderFields(str: string, delimiter: string): Record<string, string> {
+import { XpressoPayload } from "../types/XpressoPayload.js";
+
+export function parseOrderFields(str: string, delimiter: string): XpressoPayload {
 	const splittedFields = str.split(delimiter);
 
 	const fields = [
-		"sourceFiTransactionId", "senderName", "senderLastName", "senderDOB", "senderCountryOfBirth", "senderId",
-		"senderDocType", "senderNationality", "senderOccupation", "senderFiId", "senderCountryCode", "disableScreening",
-		"receiverName", "receiverLastName", "receiverAcctNumber", "receiverBankCode", "receiverCountry", "receiveAmount",
-		"targetCurrency", "purpose", "relationship", "orderSequence", "gatewayConnectionStatusCode"
+		"sourceFiTransactionId", "Sender_firstName", "Sender_lastName", "Sender_dateOfBirth", "Sender_countryOfBirth", "Sender_idNumber",
+		"Sender_idType", "Sender_nationality", "Sender_occupation", "Sender_fiId", "Sender_countryCode", "Sender_disableScreening",
+		"Receiver_firstName", "Receiver_lastName", "Receiver_idNumber", "Receiver_countryCode", "receiveAmt", "receiveAmtCcy", 
+		"purpose", "relationship", "Receiver_fiId", "Receiver_accountNumber", "Receiver_accountBranch", "Receiver_accountType", 
+		"Receiver_paymentType", "Receiver_pixKey", "Receiver_pixType", "Ordem_Sequence", "ConnErrorMsg"
 	];
 
 	const order: Record<string, string> = {};
@@ -15,5 +18,5 @@ export function parseOrderFields(str: string, delimiter: string): Record<string,
 		order[field] = splittedFields[i];
 	}
 
-	return order;
+	return order as XpressoPayload;
 }
