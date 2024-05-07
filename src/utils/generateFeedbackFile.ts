@@ -39,7 +39,7 @@ export function generateFeedbackFile(feedback: FeedbackFile, transactionId?: str
 		content = content.concat(feedback.currency);
 
 		return new Promise<string>((resolve, reject) => {
-			const fileName = `XPS247${feedback.status}${timeStamp}.txt`;
+			const fileName = `XPS${feedback.status}${timeStamp}.txt`;
 			fs.writeFile(fileName, content, (err) => {
 				if(err) {
 					reject();
