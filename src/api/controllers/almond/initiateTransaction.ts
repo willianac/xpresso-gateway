@@ -37,7 +37,7 @@ export async function initiateTransaction(payload: XpressoPayload, accessToken: 
 		receiver: {
 			fiId: payload.Receiver_fiId,
 			firstName: payload.Receiver_firstName,
-			accountNumber: (143210023705).toString()
+			accountNumber: payload.Receiver_accountNumber
 		},
 		complianceInfo: {
 			purpose: payload.purpose

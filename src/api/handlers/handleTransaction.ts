@@ -7,6 +7,7 @@ import { getRate } from "../controllers/almond/getRate.js";
 import { AlmondResponseError } from "../../types/AlmondResponseError.js";
 import { handleTransactionError } from "./handleTransactionError.js";
 import { generateFeedbackFile } from "../../utils/generateFeedbackFile.js";
+import { Client } from "basic-ftp";
 
 export async function handleTransaction(payload: XpressoPayload) {
 	try {
@@ -15,8 +16,9 @@ export async function handleTransaction(payload: XpressoPayload) {
 		const transaction = await initiateTransaction(payload, token, rate.rateId);
 		const processedTransaction = await processTransaction(transaction.transactionId, token);
 
+		let fileName = "";
 		if(processedTransaction.transactionStatus === "PRCD") {
-			generateFeedbackFile({
+			fileName = await generateFeedbackFile({
 				order: payload.sourceFiTransactionId,
 				date: new Date(),
 				beneficiary: payload.Receiver_firstName + " " + payload.Receiver_lastName,
@@ -29,7 +31,7 @@ export async function handleTransaction(payload: XpressoPayload) {
 				currency: payload.receiveAmtCcy,
 			});
 		} else {
-			generateFeedbackFile({
+			fileName = await generateFeedbackFile({
 				order: payload.sourceFiTransactionId,
 				date: new Date(),
 				beneficiary: payload.Receiver_firstName + " " + payload.Receiver_lastName,
@@ -42,6 +44,20 @@ export async function handleTransaction(payload: XpressoPayload) {
 				currency: payload.receiveAmtCcy,
 			}, transaction.transactionId);
 		}
+
+		const client = new Client();
+		client.ftp.verbose = true;
+
+		await client.access({
+			host: process.env.FTP_HOST,
+			user: process.env.FTP_USER,
+			password: process.env.FTP_PASS,
+			secure: false
+		});
+
+		await client.cd("./Retorno");
+		await client.uploadFrom(fileName, fileName);
+		client.close();
 
 	} catch (error) { 
 		const almondError = error as AlmondResponseError;

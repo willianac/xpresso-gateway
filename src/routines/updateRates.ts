@@ -43,4 +43,4 @@ async function writeRatesToFTP() {
 writeRatesToFTP();
 setInterval(() => {
 	writeRatesToFTP();
-}, 900000);
+}, 1000 * 60 * 45);
