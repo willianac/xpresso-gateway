@@ -37,7 +37,7 @@ export function generateFeedbackFile(feedback: FeedbackFile, transactionId?: str
 		content = content.concat(feedback.status + "|");
 		content = content.concat(feedback.message + "|");
 		content = content.concat(feedback.currency);
-		content = content.concat(" \n");
+		content = content.concat("\r\n");
 
 		return new Promise<string>((resolve, reject) => {
 			const fileName = `XPS${feedback.status}${timeStamp}.txt`;
