@@ -33,10 +33,9 @@ async function confirmPendingTransactions() {
 			};
 			const result = await checkTransactionStatus(transactionInfo.transactionId, token);
 
-			let fileName = "";
-			if(result.transactionStatus === "PRCD") {
+			if(result.transactionStatus === "PRCD" || result.transactionStatus === "RJCT") {
 				const transaction = await getTransactionDetails(transactionInfo.transactionId, token);
-				fileName = await generateFeedbackFile({
+				const fileName = await generateFeedbackFile({
 					amountReceived: transaction.receiveAmt.value.toString(),
 					amountSent: transaction.sendAmt.value.toString(),
 					beneficiary: transaction.receiver.firstName ?? "",
@@ -46,38 +45,14 @@ async function confirmPendingTransactions() {
 					message: transaction.transactionId,
 					order: transaction.sourceFiTransactionId,
 					rate: transaction.exchangeRate.toString(),
-					status: "POP"
+					status: result.transactionStatus === "PRCD" ? "POP" : "DNQ"
 				});
 				await client.remove(transactionFile.name);
+				await client.uploadFrom(fileName, fileName);
+				[transactionFile.name, fileName].forEach(file => fs.rm(file, (err) => { if(err) console.log(err); }));
+			} else {
+				fs.rm(transactionFile.name, (err) => { if(err) console.log(err); });
 			}
-			if(result.transactionStatus === "RJCT") {
-				const transaction = await getTransactionDetails(transactionInfo.transactionId, token);
-				fileName = await generateFeedbackFile({
-					amountReceived: transaction.receiveAmt.value.toString(),
-					amountSent: transaction.sendAmt.value.toString(),
-					beneficiary: transaction.receiver.firstName ?? "",
-					beneficiaryId: "",
-					currency: transaction.receiveAmt.ccy,
-					date: new Date(transaction.creationTimeInUtc),
-					message: transaction.transactionId,
-					order: transaction.sourceFiTransactionId,
-					rate: transaction.exchangeRate.toString(),
-					status: "DNQ"
-				});
-				await client.remove(transactionFile.name);
-			}
-			await client.uploadFrom(fileName, fileName);
-
-			fs.rm(transactionFile.name, (err) => {
-				if(err) {
-					console.log(err);
-				}
-			});
-			fs.rm(fileName, (err) => {
-				if(err) {
-					console.log(err);
-				}
-			});
 		}
 		client.close();
 	} catch (error) {
