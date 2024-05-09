@@ -1,10 +1,8 @@
 import "dotenv/config";
 import { Client } from "basic-ftp";
 import { getAcessToken } from "../api/controllers/almond/getAccessToken.js";
-import { getFiList } from "../api/controllers/almond/getFiList.js";
+import { Countries, getFiList } from "../api/controllers/almond/getFiList.js";
 import { generateFTPFile } from "../utils/generateFTPFile.js";
-
-type Countries = "PH" | "ID"
 
 async function updateBankList() {
 	const token = (await getAcessToken()).access_token;
@@ -19,13 +17,17 @@ async function updateBankList() {
 	});
 	await client.cd("./Rates");
 
-	const countries: Countries[]= ["PH", "ID"];
+	const countries: Countries[]= ["PH", "ID", "MX"];
 	let fis: string[][] = [];
 
 	for(const country of countries) {
-		const response = await getFiList(token, country);
+		const result = await getFiList(token, country);
 
-		for(const fi of response.fis) {
+		if(country === "MX") {
+			result.fis = result.fis.filter(fi => fi.serviceType === "BANK_ACCOUNT");
+		}
+
+		for(const fi of result.fis) {
 			fis.push([fi.fiName, fi.fiId, fi.active]);
 		}
 
@@ -54,8 +56,4 @@ function schedule() {
 }
 
 schedule();
-// updateBankList();
-// //mude o primeiro item para definir de quantas em quantas HORAS a função irá rodar.
-// setInterval(() => {
-// 	updateBankList();
-// }, 24 * 60 * 60 * 1000);
+updateBankList();

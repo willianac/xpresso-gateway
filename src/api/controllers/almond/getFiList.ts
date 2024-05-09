@@ -1,7 +1,7 @@
 /* eslint-disable quotes */
 import fetch from "node-fetch";
 
-type Countries = "PH" | "ID"
+export type Countries = "PH" | "ID" | "MX"
 
 type GetFiListResponse = {
 	fiName: string
