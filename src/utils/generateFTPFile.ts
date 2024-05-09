@@ -16,11 +16,7 @@ export function generateFTPFile(name: string, fileExtension: FileExtension, useT
 								date.getSeconds().toString().padStart(2, "0");
 	}
 	const fileName = name + timeStamp; 
-
-	fs.writeFile(`${fileName}.${fileExtension}`, csvData, (err) => {
-		if(err) {
-			console.error(err);
-		}
-	});
+	
+	fs.writeFileSync(`${fileName}.${fileExtension}`, csvData);
 	return fileName;
 }

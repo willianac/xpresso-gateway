@@ -7,13 +7,13 @@ import { generateFTPFile } from "../utils/generateFTPFile.js";
 async function writeRatesToFTP() {
 	const token = (await getAcessToken()).access_token;
 	const sourceCurrency = "USD";
-	const targetCurrencies = ["PHP", "BRL", "IDR"];
+	const targetCurrencies = ["PHP", "BRL", "IDR", "MXN"];
 
 	const rateList: string[][] = [];
 
 	for(const currency of targetCurrencies) {
-		//use a flag da almond 'live=y' se o pais for BRL, para evitar erros
-		const live = currency === "PHP" ? false : true;
+		//use a flag da almond 'live=y' se o pais for BRL ou IDR, para evitar erros
+		const live = currency === "BRL" || currency === "IDR" ? true : false;
 		const rate = await getRate(sourceCurrency, currency, token, live);
 		rateList.push([sourceCurrency, currency, rate.exchangeRate.toString()]);
 	}
