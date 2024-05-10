@@ -1,4 +1,5 @@
 import "dotenv/config";
+import fs from "node:fs";
 import { Client } from "basic-ftp";
 import { getAcessToken } from "../api/controllers/almond/getAccessToken.js";
 import { getRate } from "../api/controllers/almond/getRate.js";
@@ -12,8 +13,8 @@ async function writeRatesToFTP() {
 	const rateList: string[][] = [];
 
 	for(const currency of targetCurrencies) {
-		//use a flag da almond 'live=y' se o pais for BRL ou IDR, para evitar erros
-		const live = currency === "BRL" || currency === "IDR" ? true : false;
+		//use a flag da almond 'live=y' se o pais for BRL, para evitar erros
+		const live = currency === "BRL" ? true : false;
 		const rate = await getRate(sourceCurrency, currency, token, live);
 		rateList.push([sourceCurrency, currency, rate.exchangeRate.toString()]);
 	}
@@ -33,6 +34,7 @@ async function writeRatesToFTP() {
 
 		await client.cd("./Rates");
 		await client.uploadFrom(fileName + ".txt", fileName + ".txt");
+		fs.rm(fileName + ".txt", err => {if(err) console.log(err);});
 		client.close();
 	} catch (error) {
 		console.error(error);
