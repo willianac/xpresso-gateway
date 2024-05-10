@@ -18,23 +18,30 @@ async function updateBankList() {
 	await client.cd("./Rates");
 
 	const countries: Countries[]= ["PH", "ID", "MX"];
-	let fis: string[][] = [];
+	let bankAccountsFis: string[][] = [];
+	let cashPickupsFis: string[][] = [];
 
 	for(const country of countries) {
 		const result = await getFiList(token, country);
 
-		if(country === "MX") {
-			result.fis = result.fis.filter(fi => fi.serviceType === "BANK_ACCOUNT");
-		}
-
 		for(const fi of result.fis) {
-			fis.push([fi.fiName, fi.fiId, fi.active]);
+			if(fi.serviceType === "CASH_PICKUP") {
+				cashPickupsFis.push([fi.fiName, fi.fiId, fi.active]);
+			} else {
+				bankAccountsFis.push([fi.fiName, fi.fiId, fi.active]);
+			}
 		}
 
-		let file = generateFTPFile(`${country}XPSFIS`, "txt", true, ...fis);
-		await client.uploadFrom(file + ".txt", file + ".txt");
-		file = "";
-		fis = [];
+		const bankAccountFileName = generateFTPFile(`${country}XPSFIS`, "txt", true, ...bankAccountsFis);
+		await client.uploadFrom(bankAccountFileName + ".txt", bankAccountFileName + ".txt");
+
+		if(cashPickupsFis.length) {
+			const cashPickupFileName = generateFTPFile(`${country}XPSCPU`, "txt", true, ...cashPickupsFis);
+			await client.uploadFrom(cashPickupFileName + ".txt", cashPickupFileName + ".txt");
+		}
+
+		bankAccountsFis = [];
+		cashPickupsFis = [];
 	}
 	client.close();
 }
@@ -56,4 +63,3 @@ function schedule() {
 }
 
 schedule();
-updateBankList();
