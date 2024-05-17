@@ -38,7 +38,7 @@ export async function initiateTransaction(payload: XpressoPayload, accessToken: 
 		receiver: {
 			fiId: payload.Receiver_fiId,
 			firstName: payload.Receiver_firstName,
-			...(payload.receiveAmtCcy === "MXN" ? {middleName: payload.Receiver_lastName} : {lastName: payload.Receiver_lastName,}),
+			lastName: payload.Receiver_lastName,
 			accountNumber: payload.Receiver_accountNumber,
 			countryCode: payload.Receiver_countryCode
 		},
