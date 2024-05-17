@@ -32,7 +32,7 @@ export async function initiateTransaction(payload: XpressoPayload, accessToken: 
 		sender: {
 			fiId: "XPS247",
 			firstName: payload.Sender_firstName,
-			...(payload.receiveAmtCcy === "MXN" ? {middleName: payload.Sender_lastName} : {lastName: payload.Sender_lastName,}),
+			lastName: payload.Sender_lastName,
 			countryCode: payload.Sender_countryCode
 		},
 		receiver: {
