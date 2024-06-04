@@ -24,7 +24,7 @@ export type XpressoPayload = {
 	Receiver_accountNumber: string
 	Receiver_accountBranch: string
 	Receiver_accountType: string
-	Receiver_paymentType: string
+	Receiver_paymentType: "BANK_DEPOSIT" | "CASH_PICK_UP"
 	Receiver_pixKey: string
 	Receiver_pixType: string
 	ConnErrorMsg: string | undefined

@@ -8,8 +8,10 @@ import { AlmondResponseError } from "../../types/AlmondResponseError.js";
 import { handleTransactionError } from "./handleTransactionError.js";
 import { generateFeedbackFile } from "../../utils/generateFeedbackFile.js";
 import { Client } from "basic-ftp";
+import { writeFile } from "node:fs";
 
 export async function handleTransaction(payload: XpressoPayload) {
+	const startTime = performance.now();
 	try {
 		const token = (await getAcessToken()).access_token;
 		const rate = await getRate("USD", payload.receiveAmtCcy, token, false);
@@ -44,7 +46,16 @@ export async function handleTransaction(payload: XpressoPayload) {
 				currency: payload.receiveAmtCcy,
 			}, transaction.transactionId);
 		}
+		const endTime = performance.now();
+		const completionTime = endTime - startTime;
 
+		const data = `Almond fee: ${transaction.almondFee} | Completion time: ${(completionTime / 1000).toFixed(3)} | XPS Id: ${transaction.sourceFiTransactionId} | Rate: ${transaction.exchangeRate}`;
+		writeFile(`${transaction.transactionId}.txt`, data, (err) => {
+			if(err) {
+				console.log(err);
+			}
+		});
+    
 		const client = new Client();
 		client.ftp.verbose = true;
 
