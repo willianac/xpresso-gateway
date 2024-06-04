@@ -49,7 +49,7 @@ export async function initiateTransaction(payload: XpressoPayload, accessToken: 
 		receiveAmtCcy: payload.receiveAmtCcy,
 		sendAmtCcy: "USD",
 		sourceFiTransactionId: payload.sourceFiTransactionId,
-		...(payload.receiveAmtCcy === "MXN" ? {serviceType: "CASH_PICKUP"} : {})
+		...(payload.Receiver_paymentType === "CASH_PICK_UP" ? {serviceType: "CASH_PICKUP"} : {})
 	};
 	const res = await fetch(process.env.ALMOND_SANDBOX_URL + "/v1/transactions", {
 		method: "POST",
