@@ -73,5 +73,15 @@ export async function handleTransaction(payload: XpressoPayload) {
 	} catch (error) { 
 		const almondError = error as AlmondResponseError;
 		handleTransactionError(almondError, payload);
+    
+		const endTime2 = performance.now();
+		const completionTime2 = endTime2 - startTime;
+
+		const data = `Erro em 'initiateTransaction API'. Name: ${almondError.message} | Details: ${almondError.detail} | Completion Time: ${(completionTime2 / 1000).toFixed(3)}`;
+		writeFile(`${payload.sourceFiTransactionId}.txt`, data, (err) => {
+			if(err) {
+				console.log(err);
+			}
+		});
 	}
 }
