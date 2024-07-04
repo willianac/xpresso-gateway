@@ -7,13 +7,18 @@ type GetAccessTokenResponse = {
 	expires_in: number
 }
 
-export async function getAcessToken(): Promise<GetAccessTokenResponse> {
-	const token = btoa(`${process.env.ALMOND_CLIENT_ID}:${process.env.ALMOND_CLIENT_SECRET}`);
+export async function getAcessToken(production = false): Promise<GetAccessTokenResponse> {
+  const URL = production ? process.env.ALMOND_PROD_URL : process.env.ALMOND_SANDBOX_URL
+
+	const token = production
+  ? btoa(`${process.env.ALMOND_PROD_CLIENT_ID}:${process.env.ALMOND_PROD_CLIENT_SECRET}`)
+  : btoa(`${process.env.ALMOND_CLIENT_ID}:${process.env.ALMOND_CLIENT_SECRET}`)
+
 	const almondParams = new URLSearchParams();
 	almondParams.append("grant_type", "client_credentials"),
 	almondParams.append("scope", "fi transactions");
 
-	const res = await fetch(process.env.ALMOND_SANDBOX_URL as string + "/oauth2/token", {
+	const res = await fetch(URL+ "/oauth2/token", {
 		method: "POST",
 		headers: {
 			"Authorization": "Basic " + token,
