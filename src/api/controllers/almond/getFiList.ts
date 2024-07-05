@@ -10,6 +10,13 @@ type GetFiListResponse = {
 	serviceType: string
 	active: string
 	supportedSegments: string[]
+  cashPickupLocation: {
+    address: string | null
+    city: string | null
+    state: string | null
+    zipCode: string | null
+    country: string | null
+  }
 }
 
 export async function getFiList(accessToken: string, countryCode?: Countries) {
