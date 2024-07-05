@@ -26,18 +26,25 @@ async function updateBankList() {
 
 		for(const fi of result.fis) {
 			if(fi.serviceType === "CASH_PICKUP") {
-				cashPickupsFis.push([fi.fiName, fi.fiId, fi.active]);
+				cashPickupsFis.push([
+          fi.fiName, fi.fiId, 
+          fi.cashPickupLocation.address!, 
+          fi.cashPickupLocation.city!, 
+          fi.cashPickupLocation.state!, 
+          fi.cashPickupLocation.zipCode!, 
+          fi.active
+        ]);
 			} else {
 				bankAccountsFis.push([fi.fiName, fi.fiId, fi.active]);
 			}
 		}
 
 		const bankAccountFileName = generateFTPFile(`${country}XPSFIS`, "txt", true, ...bankAccountsFis);
-		await client.uploadFrom(bankAccountFileName + ".txt", bankAccountFileName + ".txt");
+		//await client.uploadFrom(bankAccountFileName + ".txt", bankAccountFileName + ".txt");
 
 		if(cashPickupsFis.length) {
 			const cashPickupFileName = generateFTPFile(`${country}XPSCPU`, "txt", true, ...cashPickupsFis);
-			await client.uploadFrom(cashPickupFileName + ".txt", cashPickupFileName + ".txt");
+			//await client.uploadFrom(cashPickupFileName + ".txt", cashPickupFileName + ".txt");
 		}
 
 		bankAccountsFis = [];
@@ -62,4 +69,4 @@ function schedule() {
 	}, timeUntilTenPM);
 }
 
-schedule();
+updateBankList()
