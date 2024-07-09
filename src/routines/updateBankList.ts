@@ -5,7 +5,7 @@ import { Countries, getFiList } from "../api/controllers/almond/getFiList.js";
 import { generateFTPFile } from "../utils/generateFTPFile.js";
 
 async function updateBankList() {
-	const token = (await getAcessToken(true)).access_token;
+	const token = (await getAcessToken()).access_token;
 
 	const client = new Client();
 	client.ftp.verbose = true;
@@ -28,7 +28,7 @@ async function updateBankList() {
 			if(fi.serviceType === "CASH_PICKUP") {
 				cashPickupsFis.push([
           fi.fiName, fi.fiId, 
-          fi.cashPickupLocation.address!, 
+          fi.cashPickupLocation.address!.replace("#", ""), 
           fi.cashPickupLocation.city!, 
           fi.cashPickupLocation.state!, 
           fi.cashPickupLocation.zipCode!, 
@@ -40,11 +40,11 @@ async function updateBankList() {
 		}
 
 		const bankAccountFileName = generateFTPFile(`${country}XPSFIS`, "txt", true, ...bankAccountsFis);
-		//await client.uploadFrom(bankAccountFileName + ".txt", bankAccountFileName + ".txt");
+		await client.uploadFrom(bankAccountFileName + ".txt", bankAccountFileName + ".txt");
 
 		if(cashPickupsFis.length) {
 			const cashPickupFileName = generateFTPFile(`${country}XPSCPU`, "txt", true, ...cashPickupsFis);
-			//await client.uploadFrom(cashPickupFileName + ".txt", cashPickupFileName + ".txt");
+			await client.uploadFrom(cashPickupFileName + ".txt", cashPickupFileName + ".txt");
 		}
 
 		bankAccountsFis = [];
@@ -69,4 +69,4 @@ function schedule() {
 	}, timeUntilTenPM);
 }
 
-updateBankList()
+schedule()
