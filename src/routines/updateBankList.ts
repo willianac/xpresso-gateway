@@ -5,7 +5,7 @@ import { Countries, getFiList } from "../api/controllers/almond/getFiList.js";
 import { generateFTPFile } from "../utils/generateFTPFile.js";
 
 async function updateBankList() {
-	const token = (await getAcessToken(true)).access_token;
+	const token = (await getAcessToken()).access_token;
 
 	const client = new Client();
 	client.ftp.verbose = true;
@@ -26,7 +26,14 @@ async function updateBankList() {
 
 		for(const fi of result.fis) {
 			if(fi.serviceType === "CASH_PICKUP") {
-				cashPickupsFis.push([fi.fiName, fi.fiId, fi.active]);
+				cashPickupsFis.push([
+          fi.fiName, fi.fiId, 
+          fi.cashPickupLocation.address!.replace("#", ""), 
+          fi.cashPickupLocation.city!, 
+          fi.cashPickupLocation.state!, 
+          fi.cashPickupLocation.zipCode!, 
+          fi.active
+        ]);
 			} else {
 				bankAccountsFis.push([fi.fiName, fi.fiId, fi.active]);
 			}
@@ -62,4 +69,4 @@ function schedule() {
 	}, timeUntilTenPM);
 }
 
-schedule();
+schedule()

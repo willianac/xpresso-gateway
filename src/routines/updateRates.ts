@@ -22,8 +22,6 @@ async function writeRatesToFTP() {
 	const fileName = generateFTPFile("XPSPFX", "txt", true, ...rateList);
 
 	const client = new Client();
-	client.ftp.verbose = true;
-
 	try {
 		await client.access({
 			host: process.env.FTP_HOST,
