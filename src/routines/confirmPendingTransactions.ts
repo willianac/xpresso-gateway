@@ -62,4 +62,4 @@ async function confirmPendingTransactions() {
 confirmPendingTransactions();
 setInterval(() => {
 	confirmPendingTransactions();
-}, 1000 * 60 * 45);
+}, 1000 * 60 * 5);
