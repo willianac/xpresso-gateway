@@ -9,7 +9,6 @@ import { getTransactionDetails } from "../api/controllers/almond/getTransactionD
 async function confirmPendingTransactions() {
 	try {
 		const client = new Client();
-		client.ftp.verbose = true;
 
 		await client.access({
 			host: process.env.FTP_HOST,
@@ -63,4 +62,4 @@ async function confirmPendingTransactions() {
 confirmPendingTransactions();
 setInterval(() => {
 	confirmPendingTransactions();
-}, 1000 * 60 * 45);
+}, 1000 * 60 * 5);

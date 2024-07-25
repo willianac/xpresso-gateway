@@ -13,6 +13,7 @@ export type XpressoPayload = {
 	Sender_disableScreening: string
 	Receiver_firstName: string
 	Receiver_lastName: string
+  Receiver_cellphone: string
 	Receiver_fiId: string
 	Receiver_countryCode: string
 	receiveAmt: string

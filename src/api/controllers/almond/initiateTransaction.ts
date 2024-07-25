@@ -40,7 +40,8 @@ export async function initiateTransaction(payload: XpressoPayload, accessToken: 
 			firstName: payload.Receiver_firstName,
 			lastName: payload.Receiver_lastName,
 			accountNumber: payload.Receiver_accountNumber,
-			countryCode: payload.Receiver_countryCode
+			countryCode: payload.Receiver_countryCode,
+      phone: payload.Receiver_cellphone
 		},
 		complianceInfo: {
 			purpose: payload.purpose

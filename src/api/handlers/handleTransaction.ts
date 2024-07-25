@@ -57,7 +57,6 @@ export async function handleTransaction(payload: XpressoPayload) {
 		});
     
 		const client = new Client();
-		client.ftp.verbose = true;
 
 		await client.access({
 			host: process.env.FTP_HOST,
