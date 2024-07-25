@@ -8,7 +8,6 @@ async function updateBankList() {
 	const token = (await getAcessToken()).access_token;
 
 	const client = new Client();
-	client.ftp.verbose = true;
 	await client.access({
 		host: process.env.FTP_HOST,
 		user: process.env.FTP_USER,
