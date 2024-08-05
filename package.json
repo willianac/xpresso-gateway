@@ -8,7 +8,7 @@
     "dev": "node --watch --loader=tsx src/api/server.ts",
     "build": "tsup src --format esm",
     "lint": "eslint '**/*.ts'",
-    "test2": "vitest"
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",

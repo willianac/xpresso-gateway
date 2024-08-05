@@ -5,7 +5,7 @@ import { getAcessToken } from "../api/controllers/almond/getAccessToken.js";
 import { getRate } from "../api/controllers/almond/getRate.js";
 import { generateFTPFile } from "../utils/generateFTPFile.js";
 
-async function writeRatesToFTP() {
+export async function writeRatesToFTP() {
 	const token = (await getAcessToken()).access_token;
 	const sourceCurrency = "USD";
 	const targetCurrencies = ["PHP", "BRL", "IDR", "MXN"];
