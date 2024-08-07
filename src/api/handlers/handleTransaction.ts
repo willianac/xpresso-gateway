@@ -8,10 +8,8 @@ import { AlmondResponseError } from "../../types/AlmondResponseError.js";
 import { handleTransactionError } from "./handleTransactionError.js";
 import { generateFeedbackFile } from "../../utils/generateFeedbackFile.js";
 import { Client } from "basic-ftp";
-import { writeFile } from "node:fs";
 
 export async function handleTransaction(payload: XpressoPayload) {
-	const startTime = performance.now();
 	try {
 		const token = (await getAcessToken()).access_token;
 		const rate = await getRate("USD", payload.receiveAmtCcy, token, false);
@@ -46,16 +44,6 @@ export async function handleTransaction(payload: XpressoPayload) {
 				currency: payload.receiveAmtCcy,
 			}, transaction.transactionId);
 		}
-		const endTime = performance.now();
-		const completionTime = endTime - startTime;
-
-		const data = `Almond fee: ${transaction.almondFee} | Completion time: ${(completionTime / 1000).toFixed(3)} | XPS Id: ${transaction.sourceFiTransactionId} | Rate: ${transaction.exchangeRate}`;
-		writeFile(`${transaction.transactionId}.txt`, data, (err) => {
-			if(err) {
-				console.log(err);
-			}
-		});
-    
 		const client = new Client();
 
 		await client.access({
@@ -72,15 +60,5 @@ export async function handleTransaction(payload: XpressoPayload) {
 	} catch (error) { 
 		const almondError = error as AlmondResponseError;
 		handleTransactionError(almondError, payload);
-    
-		const endTime2 = performance.now();
-		const completionTime2 = endTime2 - startTime;
-
-		const data = `Erro em 'initiateTransaction API'. Name: ${almondError.message} | Details: ${almondError.detail} | Completion Time: ${(completionTime2 / 1000).toFixed(3)}`;
-		writeFile(`${payload.sourceFiTransactionId}.txt`, data, (err) => {
-			if(err) {
-				console.log(err);
-			}
-		});
 	}
 }
