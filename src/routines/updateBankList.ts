@@ -5,7 +5,7 @@ import { Countries, getFiList } from "../api/controllers/almond/getFiList.js";
 import { generateFTPFile } from "../utils/generateFTPFile.js";
 
 async function updateBankList() {
-	const token = (await getAcessToken()).access_token;
+	const token = (await getAcessToken(true)).access_token;
 
 	const client = new Client();
 	await client.access({

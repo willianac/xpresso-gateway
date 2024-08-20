@@ -43,7 +43,7 @@ type GetTransactionDetailsResponse = {
 }
 
 export async function getTransactionDetails(id: string, accessToken: string) {
-	const res = await fetch(process.env.ALMOND_SANDBOX_URL + `/v1/transactions/${id}`, {
+	const res = await fetch(process.env.ALMOND_PROD_URL + `/v1/transactions/${id}`, {
 		method: "GET",
 		headers: {
 			"Authorization": "Bearer " + accessToken,

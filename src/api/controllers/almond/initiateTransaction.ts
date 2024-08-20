@@ -52,7 +52,7 @@ export async function initiateTransaction(payload: XpressoPayload, accessToken: 
 		sourceFiTransactionId: payload.sourceFiTransactionId,
 		...(payload.Receiver_paymentType === "CASH_PICK_UP" ? {serviceType: "CASH_PICKUP"} : {})
 	};
-	const res = await fetch(process.env.ALMOND_SANDBOX_URL + "/v1/transactions", {
+	const res = await fetch(process.env.ALMOND_PROD_URL + "/v1/transactions", {
 		method: "POST",
 		headers: {
 			"Authorization": "Bearer " + accessToken,

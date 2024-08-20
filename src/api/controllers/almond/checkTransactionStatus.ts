@@ -10,7 +10,7 @@ type CheckTransactionStatusResponse = {
 }
 
 export async function checkTransactionStatus(id: string, accessToken: string) {
-	const res = await fetch(process.env.ALMOND_SANDBOX_URL + `/v1/transactions/${id}/status`, {
+	const res = await fetch(process.env.ALMOND_PROD_URL + `/v1/transactions/${id}/status`, {
 		method: "GET",
 		headers: {
 			"Authorization": "Bearer " + accessToken,
