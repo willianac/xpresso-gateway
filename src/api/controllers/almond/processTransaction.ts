@@ -7,7 +7,7 @@ type ProcessTransactionResponse = {
 }
 
 export async function processTransaction(id: string, accessToken: string) {
-	const res = await fetch(process.env.ALMOND_SANDBOX_URL + `/v1/transactions/${id}/process`, {
+	const res = await fetch(process.env.ALMOND_PROD_URL + `/v1/transactions/${id}/process`, {
 		method: "POST",
 		headers: {
 			"Authorization": "Bearer " + accessToken

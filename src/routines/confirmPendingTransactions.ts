@@ -20,7 +20,7 @@ async function confirmPendingTransactions() {
 		await client.cd("./Retorno");
 		const files = await client.list();
 		const pendingTransactions = files.filter(file => file.name.startsWith("PND"));
-		const token = (await getAcessToken()).access_token;
+		const token = (await getAcessToken(true)).access_token;
 
 		for(const transactionFile of pendingTransactions) {
 			await client.downloadTo(transactionFile.name, transactionFile.name);

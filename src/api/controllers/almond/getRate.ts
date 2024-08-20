@@ -19,7 +19,7 @@ export async function getRate(
 	liveFeature: boolean
 ): Promise<GetRateResponse> {
 	const live = liveFeature ? "&live=y" : "";
-	const res = await fetch(process.env.ALMOND_SANDBOX_URL as string + `/v1/rates?sourceCurrency=${sourceCurrency}&targetCurrency=${targetCurrency}${live}`, {
+	const res = await fetch(process.env.ALMOND_PROD_URL as string + `/v1/rates?sourceCurrency=${sourceCurrency}&targetCurrency=${targetCurrency}${live}`, {
 		method: "GET",
 		headers: {
 			"Authorization": "Bearer " + accessToken
