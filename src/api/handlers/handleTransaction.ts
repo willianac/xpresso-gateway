@@ -11,7 +11,7 @@ import { Client } from "basic-ftp";
 
 export async function handleTransaction(payload: XpressoPayload) {
 	try {
-		const token = (await getAcessToken()).access_token;
+		const token = (await getAcessToken(true)).access_token;
 		const rate = await getRate("USD", payload.receiveAmtCcy, token, false);
 		const transaction = await initiateTransaction(payload, token, rate.rateId);
 		const processedTransaction = await processTransaction(transaction.transactionId, token);
