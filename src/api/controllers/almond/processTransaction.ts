@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { AlmondResponseError } from "../../../types/AlmondResponseError.js";
+import { writeFile, writeFileSync } from "node:fs";
 
 type ProcessTransactionResponse = {
 	transactionStatus: string,
@@ -16,6 +17,10 @@ export async function processTransaction(id: string, accessToken: string) {
 
 	if(!res.ok) {
 		const error = await res.json() as AlmondResponseError;
+
+    //AUDIT DE ERROR NOS TESTES DE PRODUÇAO ALMOND
+    writeFileSync(`PRCSS-ERR-${id}.txt`, JSON.stringify(error, null, 4))
+
 		throw error;
 	}
 

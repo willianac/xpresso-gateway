@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 import { XpressoPayload } from "../../../types/XpressoPayload.js";
 import { AlmondResponseError } from "../../../types/AlmondResponseError.js";
+import { writeFileSync } from "node:fs";
 
 type InitiateTransactionResponse = {
 	transactionId: string
@@ -63,6 +64,10 @@ export async function initiateTransaction(payload: XpressoPayload, accessToken: 
 
 	if(!res.ok) {
 		const error = await res.json() as AlmondResponseError;
+
+    //AUDIT DE ERROR NOS TESTES DE PRODUÇAO ALMOND
+    writeFileSync(`INIT-ERR-${payload.sourceFiTransactionId}`, JSON.stringify(error, null, 4))
+
 		throw error;
 	}
 	
