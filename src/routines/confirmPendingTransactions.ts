@@ -59,6 +59,7 @@ async function confirmPendingTransactions() {
 		}
 		client.close();
 	} catch (error) {
+    fs.writeFileSync(Date.now(), "Erro na rotina de confirmPendingTransactions" + "\n" + JSON.stringify(error, null, 4))
 		console.log(error);
 	}
 }
