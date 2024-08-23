@@ -1,5 +1,4 @@
 import { getAcessToken } from "../controllers/almond/getAccessToken.js";
-
 import { XpressoPayload } from "../../types/XpressoPayload.js";
 import { initiateTransaction } from "../controllers/almond/initiateTransaction.js";
 import { processTransaction } from "../controllers/almond/processTransaction.js";
@@ -8,10 +7,11 @@ import { AlmondResponseError } from "../../types/AlmondResponseError.js";
 import { handleTransactionError } from "./handleTransactionError.js";
 import { generateFeedbackFile } from "../../utils/generateFeedbackFile.js";
 import { Client } from "basic-ftp";
+import { writeFileSync } from "fs";
 
 export async function handleTransaction(payload: XpressoPayload) {
 	try {
-		const token = (await getAcessToken()).access_token;
+		const token = (await getAcessToken(true)).access_token;
 		const rate = await getRate("USD", payload.receiveAmtCcy, token, false);
 		const transaction = await initiateTransaction(payload, token, rate.rateId);
 		const processedTransaction = await processTransaction(transaction.transactionId, token);
@@ -57,8 +57,22 @@ export async function handleTransaction(payload: XpressoPayload) {
 		await client.uploadFrom(fileName, fileName);
 		client.close();
 
-	} catch (error) { 
-		const almondError = error as AlmondResponseError;
-		handleTransactionError(almondError, payload);
+	} catch (error) {
+      if(isAlmondError(error)) {
+        const almondError = error as AlmondResponseError;
+        handleTransactionError(almondError, payload);
+        return
+      }
+    writeFileSync(`${payload.sourceFiTransactionId}.txt`, JSON.stringify(error, null, 4))
 	}
+}
+
+function isAlmondError(error: any): error is AlmondResponseError {
+  return (
+		typeof error === 'object' &&
+		error !== null &&
+		typeof error.code === 'string' &&
+		typeof error.message === 'string' &&
+		typeof error.detail === 'string'
+	);
 }
