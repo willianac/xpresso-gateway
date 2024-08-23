@@ -34,6 +34,10 @@ async function confirmPendingTransactions() {
 
 			if(result.transactionStatus === "PRCD" || result.transactionStatus === "RJCT") {
 				const transaction = await getTransactionDetails(transactionInfo.transactionId, token);
+
+        //AUDIT DE ERROR NOS TESTES DE PRODUÇAO ALMOND
+        fs.writeFileSync(`CNFRM-ERR-${transactionInfo.xpressoInvoice}-${transactionInfo.transactionId}`, JSON.stringify(result, null, 4) + "\n" + JSON.stringify(transaction, null, 4))
+
 				const fileName = await generateFeedbackFile({
 					amountReceived: transaction.receiveAmt.value.toString(),
 					amountSent: transaction.sendAmt.value.toString(),
