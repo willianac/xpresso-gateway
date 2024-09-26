@@ -8,7 +8,7 @@ import { generateFTPFile } from "../utils/generateFTPFile.js";
 export async function writeRatesToFTP() {
 	const token = (await getAcessToken(true)).access_token;
 	const sourceCurrency = "USD";
-	const targetCurrencies = ["PHP", "BRL"];
+	const targetCurrencies = ["PHP"];
 
 	const rateList: string[][] = [];
 
