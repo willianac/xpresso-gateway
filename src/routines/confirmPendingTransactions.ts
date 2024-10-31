@@ -36,7 +36,12 @@ async function confirmPendingTransactions() {
 				const transaction = await getTransactionDetails(transactionInfo.transactionId, token);
 
         //AUDIT DE ERROR NOS TESTES DE PRODUÇAO ALMOND
-        fs.writeFileSync(`CNFRM-ERR-${transactionInfo.xpressoInvoice}-${transactionInfo.transactionId}`, JSON.stringify(result, null, 4) + "\n" + JSON.stringify(transaction, null, 4))
+        if(result.transactionStatus === "RJCT") {
+          fs.writeFileSync(
+            `CNFRM-ERR-${transactionInfo.xpressoInvoice}-${transactionInfo.transactionId}`, 
+            JSON.stringify(result, null, 4) + "\n" + JSON.stringify(transaction, null, 4)
+          )
+        }
 
 				const fileName = await generateFeedbackFile({
 					amountReceived: transaction.receiveAmt.value.toString(),
@@ -44,7 +49,7 @@ async function confirmPendingTransactions() {
 					beneficiary: transaction.receiver.firstName ?? "",
 					beneficiaryId: "",
 					currency: transaction.receiveAmt.ccy,
-					date: new Date(transaction.creationTimeInUtc),
+					date: new Date(),
 					message: transaction.transactionId,
 					order: transaction.sourceFiTransactionId,
 					rate: transaction.exchangeRate.toString(),
