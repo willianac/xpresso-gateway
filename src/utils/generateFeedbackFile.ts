@@ -21,7 +21,7 @@ export function generateFeedbackFile(feedback: FeedbackFile, transactionId?: str
 										date.getHours().toString().padStart(2, "0") + 
 										date.getMinutes().toString().padStart(2, "0") + 
 										date.getSeconds().toString().padStart(2, "0");
-	
+
 	let content = "";
 
 	if(feedback.status !== "PND") {
@@ -40,7 +40,7 @@ export function generateFeedbackFile(feedback: FeedbackFile, transactionId?: str
 		content = content.concat("\r\n");
 
 		return new Promise<string>((resolve, reject) => {
-			const fileName = `XPS${feedback.status}${timeStamp}.txt`;
+			const fileName = `XPS${feedback.status}${timeStamp}-${feedback.order}.txt`;
 			fs.writeFile(fileName, content, (err) => {
 				if(err) {
 					reject();
@@ -54,7 +54,7 @@ export function generateFeedbackFile(feedback: FeedbackFile, transactionId?: str
 	content = content.concat(feedback.order );
 
 	return new Promise<string>((resolve, reject) => {
-		const fileName = `PND${timeStamp}.txt`;
+		const fileName = `PND${timeStamp}-${feedback.order}.txt`;
 		fs.writeFile(fileName, content, (err) => {
 			if(err) {
 				reject();
