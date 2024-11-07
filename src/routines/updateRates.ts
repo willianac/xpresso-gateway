@@ -4,6 +4,7 @@ import { Client } from "basic-ftp";
 import { getAcessToken } from "../api/controllers/almond/getAccessToken.js";
 import { getRate } from "../api/controllers/almond/getRate.js";
 import { generateFTPFile } from "../utils/generateFTPFile.js";
+import { getQuotation } from "../api/controllers/awesomeApi/getQuotation.js";
 
 export async function writeRatesToFTP() {
 	const token = (await getAcessToken(true)).access_token;
@@ -19,7 +20,7 @@ export async function writeRatesToFTP() {
 		rateList.push([sourceCurrency, currency, rate.exchangeRate.toString()]);
 	}
 
-	const fileName = generateFTPFile("XPSPFX", "txt", true, ...rateList);
+	let fileName = generateFTPFile("XPSPFX", "txt", true, ...rateList);
 
 	const client = new Client();
 	try {
@@ -27,6 +28,39 @@ export async function writeRatesToFTP() {
 			host: process.env.FTP_HOST,
 			user: process.env.FTP_USER,
 			password: process.env.FTP_PASS,
+			secure: false
+		});
+
+		await client.cd("./Rates");
+		await client.uploadFrom(fileName + ".txt", fileName + ".txt");
+		fs.rm(fileName + ".txt", err => {if(err) console.log(err);});
+		client.close();
+	} catch (error) {
+		console.error(error);
+	}
+	client.close();
+
+  
+  //subir rate USD-BRX usando a Awesome API
+
+  const quotation = await getQuotation("USD-BRL")
+  if("status" in quotation) {
+    console.log("Erro ao capturar cotação da Awesome API.")
+    return
+  }
+  const original = parseFloat(quotation["USDBRL"].bid)
+  const reductedRate = original - (original * 0.007)
+
+  const awesomeRate: string[][] = []
+  awesomeRate.push(["USD", "BRX", reductedRate.toFixed(3)])
+  
+  fileName = generateFTPFile("XPSPFX", "txt", true, ...awesomeRate)
+
+	try {
+		await client.access({
+			host: process.env.FTP_HOST,
+			user: process.env.FTP_USER_BRX_RATE,
+			password: process.env.FTP_PASS_BRX_RATE,
 			secure: false
 		});
 
