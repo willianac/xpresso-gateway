@@ -42,9 +42,9 @@ export async function initiateTransaction(payload: XpressoPayload, accessToken: 
 			lastName: payload.Receiver_lastName,
 			countryCode: payload.Receiver_countryCode,
       phone: payload.Receiver_cellphone,
-      ...(payload.receiveAmtCcy !== "BRL") ? 
-      { accountNumber: payload.Receiver_accountNumber }
-      : { pixType: payload.Receiver_pixType, pixKey: payload.Receiver_pixKey }
+      ...(payload.receiveAmtCcy !== "BRL" 
+				? { accountNumber: payload.Receiver_accountNumber } 
+				: { pixType: payload.Receiver_pixType, pixKey: payload.Receiver_pixKey })
 		},
 		complianceInfo: {
 			purpose: payload.purpose
