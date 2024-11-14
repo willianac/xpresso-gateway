@@ -41,6 +41,7 @@ export async function initiateTransaction(payload: XpressoPayload, accessToken: 
 			firstName: payload.Receiver_firstName,
 			lastName: payload.Receiver_lastName,
 			countryCode: payload.Receiver_countryCode,
+			taxId: payload.Receiver_idNumber,
       phone: payload.Receiver_cellphone,
       ...(payload.receiveAmtCcy !== "BRL" 
 				? { accountNumber: payload.Receiver_accountNumber } 
